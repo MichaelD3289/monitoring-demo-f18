@@ -17,20 +17,20 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '../public/index.html'));
 })
 
-let students = [];
+let students = []
 
 app.post('/api/student', (req, res)=>{
-  let {name} = req.body
-  name = name.trim()
+    let {name} = req.body
+    name = name.trim()
 
-  students.push(name)
+    students.push(name)
 
-  rollbar.log('student was added succesfully', {author: 'Scott', type: 'manual entry', student: name});
+    rollbar.log('student was added successfully', {author: 'Scott', type: 'manual', student: name})
 
-  res.status(200).send(students)
+    res.status(200).send(students)
 })
 
-app.use(rollbar.errorHandler());
+app.use(rollbar.errorHandler())
 
 
 const port = process.env.PORT || 4545
