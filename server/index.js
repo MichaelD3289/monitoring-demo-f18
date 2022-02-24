@@ -9,13 +9,28 @@ var rollbar = new Rollbar({
 })
 
 // record a generic message and send it to Rollbar
-rollbar.log('Hello world!')
+rollbar.log('Hello world!');
 
 const app = express();
 
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '../public/index.html'));
 })
+
+let students = [];
+
+app.post('/api/student', (req, res)=>{
+  let {name} = req.body
+  name = name.trim()
+
+  students.push(name)
+
+  rollbar.log('student was added succesfully', {author: 'Scott', type: 'manual entry', student: name});
+
+  res.status(200).send(students)
+})
+
+app.use(rollbar.errorHandler());
 
 
 const port = process.env.PORT || 4545
